@@ -19,6 +19,8 @@ To get the holding records, both an MMS ID and a Holding ID are needed for the [
 Each of the above steps corresponds to the three scripts: *west1_...*, *west2_...*, and *west3_...*. Although they could be combined into one script, the distinct sequence of steps is more amenable to working with a large number of items. In our case, 4000+ items makes steps 2 and 3 take nearly an hour each since each item represents one REST request per step.
 
 ## Additional Notes ##
+* Each script contains help information (run the script with no arguments) to get particulars).
+* Scripts *west2_...* and *west3_...* require an APIKEY (as an argument) in order to access the web services.
 * Script *west1_...* requires the PyMARC library.
 * Scripts *west2_...* and *west3_...* require the lxml library.
 * Due to the slowness of the REST requests, both scripts *west2_...* and *west3_...* are prime candidates for parallelism. 
