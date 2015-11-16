@@ -44,7 +44,7 @@ def usage(where=sys.stdout):
     print('Gather Holding Records via REST using a list of Holding and MMS IDs.',
           file=where)    
     print('Usage:', file=where)
-    print('  west2_gather_Holding_IDs.py <file.txt> <APIKEY>', file=where)
+    print('  west3_gather_Holding_IDs.py <file.txt> <APIKEY>', file=where)
     print('Where:', file=where)
     print('  file.txt            List of Holding/MSS IDs (Holding\tMMS per line)',
           file=where)
