@@ -57,9 +57,9 @@ def fileCheck(filename):
         print('File: ' + filename + ' not found. Exiting...', file=sys.stderr)
         sys.exit(1)
 
-def GetHoldingID(mmsID, apikey):
+def GetHoldingIDs(mmsID, apikey):
     """
-    Make a REST call: Retrive Holdings List and return the value in
+    Make a REST call: Retrieve Holdings List and return a list of the values in
     the <holding_id> tag of the returned XML.
     """
     url = 'https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/{mms_id}/holdings'
@@ -73,7 +73,12 @@ def GetHoldingID(mmsID, apikey):
 
     data_xml = etree.fromstring(response_body)
 
-    return data_xml.findtext('.//holding_id')
+    ids = []
+    
+    for e in data_xml.findall('.//holding_id'):
+        ids.append(e.text)
+    
+    return ids
 
 def main(argv):
     if len(argv) != 3:
@@ -104,14 +109,15 @@ def main(argv):
         count += 1
 
         if count % 250 == 0:
-            print('  Gathering holding ID #' + unicode(count) + '...')
+            print('  Processing MMS ID #' + unicode(count) + '...')
             
         # must strip mmsID to avoid any newlines
         mmsID = line.strip()
-        holdingID = GetHoldingID(mmsID,apikey)
-        writer.write(holdingID + u'\t' + mmsID + u'\n')        
+        holdingIDs = GetHoldingIDs(mmsID,apikey)
+        for hID in holdingIDs:            
+            writer.write(hID + u'\t' + mmsID + u'\n')        
 
-    print('Finished. ' + unicode(count) + ' Holding ID(s) gathered.')
+    print('Finished. ' + unicode(count) + ' MMS ID(s) processed.')
 
 if __name__ == '__main__':
     main(sys.argv)
