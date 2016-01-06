@@ -35,7 +35,7 @@ import pymarc
 
 def usage(where=sys.stdout):
     """Print a usage statement for this script."""
-    print('Convert MARCXML to MARC21 binary.',
+    print('Convert MARCXML to MARC21 binary. Also filters out records lacking a 583 field.',
           file=where)    
     print('Usage:', file=where)
     print('  west4_convert_XML_to_MARC21.py <file.xml>', file=where)
@@ -77,25 +77,26 @@ def main(argv):
     records = pymarc.parse_xml_to_array(inFile)
 
     count = 0
-    for rec in records:
-        count += 1
-
-        if count % 250 == 0:
-            print('  Processing record #' + unicode(count) + '...')
-            
+    for rec in records:           
         # force utf-8
         rec.force_utf8 = True
+
+        # skip over any entries that have an empty 583 field
+        if len(rec.get_fields('583')) == 0:
+            print('Blank 583 field: skipping ' +  rec['001'].value() + ' / ' + rec['004'].value())
+            continue;
+            
+        count = count + 1
+        
         # get string representation of marc
         marc = rec.as_marc()
         # decode character set
         marc = marc.decode('utf-8')
-        
+                        
         # output
         writer.write(marc)
-
-    # close the XML
-    writer.write('</collection>\n')
-    
+    # end for loop
+   
     print('Finished. ' + unicode(count) + ' MARCXML records converted to MARC21 binary.')
 
 if __name__ == '__main__':
