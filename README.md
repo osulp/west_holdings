@@ -1,6 +1,12 @@
-# WEST Holdings Scripts (aka Getting Holdings Records from Alma #
+# WEST Holdings Scripts (aka Getting Holdings Records from Alma)
+(forked from https://bitbucket.org/uwlib/west_holdings/src/master/ )
 
 For our commitment to services like WEST, we have to provide holding records. Unfortunately, there is no direct way to export holding records from Alma. Using ideas from [Bill Kelm's approach](https://github.com/hatfieldlibrary/alma-holdings-records), this repository contains a series of scripts for extracting holding records via the Alma REST APIs.
+
+## Requirements ##
+* Python 2
+* pymarc https://github.com/edsu/pymarc
+* ExLibris API Key - Retrieve Holdings Record web service
 
 ## Usage ##
 Kelm's approach uses an Analytic to get the MMS and Holding IDs for the desired records. This approach instead starts with an Alma set.
@@ -20,7 +26,7 @@ To get the holding records, both an MMS ID and a Holding ID are needed for the [
 Each of the above steps corresponds to the scripts: *west1_...*, *west2_...*, *west3_...*, and *west4...*. Although they could be combined into one script, the distinct sequence of steps is more amenable to working with a large number of items. In our case, 4000+ items makes steps 2 and 3 take nearly an hour each since each item represents one REST request per step.
 
 ## Additional Notes ##
-* Each script contains help information (run the script with no arguments) to get particulars).
+* Each script contains help information (run the script with no arguments) to get particulars.
 * Scripts *west2_...* and *west3_...* require an APIKEY (as an argument) in order to access the web services.
 * Script *west1_...* requires the PyMARC library.
 * Scripts *west2_...* and *west3_...* require the lxml library.
@@ -29,7 +35,7 @@ Each of the above steps corresponds to the scripts: *west1_...*, *west2_...*, *w
 * *west4_...* also filters out records that lack a 583 field as such records are guaranteed to not be part of the WEST commitment.
 * The provided code is streamlined for WEST. As such, script *west3_...* additionally places the Holding ID in the '001' field and the MMS ID in the '004' field.
 
-##License##
+## License ##
 
 This code is released under the OpenBSD license:
 
